@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Header
 import requests
 
 app = FastAPI()
@@ -35,8 +35,14 @@ def register_user(user:dict):
 
 
 @app.post("/create/book/")
-def create_book(book: dict):
-    response = requests.post(f"{BOOK_SERVICE_URL}/create/book/", json=book)
+def create_book(book: dict, authorization: str = Header(None)):
+    """Pass JWT token when calling Book Service API"""
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Authorization token is required")
+
+    headers = {"Authorization": authorization}  # Forward token to Book Service
+    response = requests.post(f"{BOOK_SERVICE_URL}/create/book/", json=book, headers=headers)
+    
     return response.json()
 
 
