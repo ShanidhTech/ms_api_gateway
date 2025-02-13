@@ -16,9 +16,9 @@ def get_books(authorization: str = Header(None)):
     response = requests.get(f"{BOOK_SERVICE_URL}/books/", headers=headers)
     return response.json()
 
-@app.post("/orders")
+@app.get("/orders")
 def create_order(order: dict):
-    response = requests.post(f"{ORDER_SERVICE_URL}/orders/", json=order)
+    response = requests.get(f"{ORDER_SERVICE_URL}/orders/", json=order)
     return response.json()
 
 @app.post("/users")
