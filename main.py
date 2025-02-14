@@ -16,14 +16,24 @@ def get_books(authorization: str = Header(None)):
     response = requests.get(f"{BOOK_SERVICE_URL}/books/", headers=headers)
     return response.json()
 
-@app.get("/orders")
+@app.post("/orders")
 def create_order(order: dict):
-    response = requests.get(f"{ORDER_SERVICE_URL}/orders/", json=order)
+    response = requests.post(f"{ORDER_SERVICE_URL}/orders/", json=order)
     return response.json()
+
+@app.get("/orders")
+def get_order():
+    response = requests.get(f"{ORDER_SERVICE_URL}/orders/")
+    return response.json()    
 
 @app.post("/users")
 def create_user(user: dict):
     response = requests.post(f"{USER_SERVICE_URL}/users/", json=user)
+    return response.json()
+
+@app.get("/users")
+def user_list():
+    response = requests.get(f"{USER_SERVICE_URL}/users/")
     return response.json()
 
 
